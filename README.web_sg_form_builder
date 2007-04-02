@@ -1,7 +1,7 @@
 This is not a rails-plugin.
 
 1. cd $RAILS_ROOT
-2. svn export http://choonkeat.svnrepository.com/svn/rails-plugins/web_sg_form_builder .
+2. svn export http://choonkeat.svnrepository.com/svn/rails-plugins/web_sg_form_builder . --force
 3. ./script/server
 4. Go to http://localhost:3000/web_sg_form_builder
 
