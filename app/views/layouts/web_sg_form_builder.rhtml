@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/
+xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <%= stylesheet_link_tag 'coderay' %>
+  <style type="text/css">
+  body {
+      font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+      font-size: 76%;      /* allows safe use of em unit - blog.fawny.org */
+  }
+  
+  p, div, span, input, form, textarea, select, a {
+      font-size: 1em;
+  }
+  
+  span, input, form, textarea, select, a {
+      font-size: 1em;
+  }
+  
+  form legend {
+      font-size: 1.2em;
+      font-weight: bold;
+  }
+  
+  form dl input, form dl textarea, form dl select {
+      padding: 3px 3px 3px 3px;
+      margin-top: 3px;
+  }
+  
+  form dl dt {
+      margin-top: 1em;     /* white-space above field label */
+  }
+  
+  form dl dd {
+      margin-left: 0px;    /* by default dd is indented */
+  }
+  
+  form dl dt label {
+      font-weight: bold;
+      margin-right: 1.5em;
+  }
+  
+  form dl dt span, .hint, a.hint, .hint a {        /* style for hints */
+      vertical-align: text-top;
+      color: #A0A0A0;
+      font-size: 0.85em;
+  }
+  </style>
+</head>
+<body>
+  <h2>
+  WebSgFormBuilder introduces 2 new methods (fieldset and dd) to help build more sematically correct forms
+  </h2>
+  <p>
+  To use it in your Rails app, there is 2 ways to go about it
+  </p>
+  <p>
+  Option#1 Introducing it independently to new forms by adding this <code>:builder</code> option:
+    <pre>
+    form_for :thing, @thing, :url => { :action => 'save' },:builder => ::WebSgFormBuilder do |f|
+    </pre> 
+  </p>
+  <p>
+  Option#2 Make this default builder for all forms by editing app/helpers/application_helper.rb
+    <pre>
+    module ApplicationHelper
+      include WebSgFormHelper
+    end
+    </pre>
+  </p>
+  <h2><code>app/views/web_sg_form_builder/index.rhtml</code></h2>
+  <h2>Source RHTML</h2>
+  <% source = open(RAILS_ROOT + "/app/views/web_sg_form_builder/index.rhtml") {|f| f.read } rescue nil %>
+  <pre class="CodeRay" style="overflow-x: auto">
+<%= ::CodeRay.scan(source, :rhtml).html rescue "<em>(install coderay to see this in color)</em>\n" + h(source) %></pre>
+  <p />
+  <h2>Generated HTML source</h2>
+  <pre class="CodeRay" style="overflow-x: auto">
+<%= ::CodeRay.scan(yield, :html).html rescue "<em>(install coderay to see this in color)</em>\n" + h(yield) %></pre>
+  <h2>Generated HTML rendered</h2>
+  <%= yield %>
+</body>
+</html>
