@@ -1,0 +1,18 @@
+== QUICKSTART 
+for the sake of seeing a demo / instruction page, this is the fastest way
+
+1. cd $RAILS_ROOT
+2. svn export http://choonkeat.svnrepository.com/svn/rails-plugins/web_sg_form_builder . --force
+3. ./script/server
+4. Go to http://localhost:3000/web_sg_form_builder
+
+Feel free to edit app/views/web_sg_form_builder/index.rhtml and reload the URL mentioned above, to see the changes.
+
+== INSTALL 
+For proper usage - especially in Rails projects already under version control - you might wish to install only the plugin libraries:
+
+1. cd $RAILS_ROOT
+2. ./script/plugin install \
+     http://choonkeat.svnrepository.com/svn/rails-plugins/web_sg_form_builder/vendor/plugins/web_sg_form_builder
+
+
