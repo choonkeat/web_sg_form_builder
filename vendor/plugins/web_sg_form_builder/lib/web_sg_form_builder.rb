@@ -23,7 +23,13 @@ class WebSgFormBuilder
     proc.call(self)
     concat("</dl></fieldset>", proc.binding)
   end
-
+  
+  def dl(&proc)
+    concat("<dl>", proc.binding)
+    proc.call(self)
+    concat("</dl>", proc.binding)
+  end
+  
   def dd(label, hint = nil, &proc)
     concat("<dt><label>#{CGI.escapeHTML(label)}</label><span>#{CGI.escapeHTML(hint)}</span></dt><dd>", proc.binding)
     proc.call(self)
