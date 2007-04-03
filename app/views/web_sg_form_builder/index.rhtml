@@ -1,6 +1,6 @@
 <% form_for :thing, @thing, :url => { :action => 'save' } do |f| %>
 
-  <% f.fieldset 'Authentication' do |f| %>
+  <% f.fieldset 'Authentication' do %>
     <%= f.text_field     :name,             :label => 'Name', 
                                             :hint  => 'e.g. michael' %>
     <%= f.password_field :password,         :label => 'Password' %>
@@ -8,16 +8,16 @@
                                             :hint  => 'Re-enter your password' %>
   <% end %>
   
-  <% f.fieldset 'Personal Details'  do |f| %>
+  <% f.fieldset 'Personal Details' do %>
     <%= f.select    :code_name, %w[alpha],  :hint  => 'this appears on your public profile' %>
     <%= f.text_area :description,           :hint  => 'this appears on your public profile' %>
     
-    <% f.dd 'Hobbies' do |f| %>
+    <% f.dd 'Hobbies' do %>
       <%= f.check_box :soccer %> Soccer
       <%= f.check_box :swimming %> Swimming
     <% end %>
   
-    <% f.dd 'Demography'  do |f| %>
+    <% f.dd 'Demography' do %>
       <%= f.radio_button :male %> Male
       <%= f.radio_button :female %> Female
     <% end %>        
