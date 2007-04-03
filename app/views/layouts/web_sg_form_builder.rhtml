@@ -48,23 +48,78 @@ xhtml1/DTD/xhtml1-transitional.dtd">
   </style>
 </head>
 <body>
-  <h2>
-  WebSgFormBuilder introduces 2 new methods (fieldset and dd) to help build more sematically correct forms
-  </h2>
+  <h1>WebSgFormBuilder</h1>
   <p>
-  To use it in your Rails app, there is 2 ways to go about it
+  WebSgFormBuilder introduces 2 new methods (<code>fieldset</code> and <code>dd</code>) to your form, and 2 new options (<code>:hint</code> and <code>:label</code>) for existing form helper methods (e.g. <code>text_field</code>) to help build more sematically correct forms that takes on this structure
+  <pre>
+&lt;form ... &gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Some Context&lt;/legend&gt;
+    &lt;dl&gt;
+      &lt;dt&gt;&lt;label for="someid"&gt;Name&lt;/label&gt;&lt;/dt&gt;
+      &lt;dd&gt;&lt;input id="someid" ... /&gt;&lt;/dd&gt;
+    &lt;dl&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;
+  </pre>
+  </p>
+  <h3>f.fieldset</h3>
+<table><tr><td style='width: 12em;'>
+  <pre>
+  &lt;% f.fieldset 'hello' do %&gt;
+    world
+  &lt;% end %&gt;
+  </pre>
+</td><td>
+  translates to: 
+</td><td>
+  <pre>
+  &lt;fieldset&gt;&lt;legend&gt;hello&lt;/legend&gt;&lt;dl&gt;
+    world
+  &lt;/dl&gt;&lt;/fieldset&gt;
+  </pre>
+</td></tr></table>
+  <h3>f.dd</h3>
+  <p>
+  To group several checkboxes or radio buttons, you can use the <code>dd</code> method:
+  </p>
+<table><tr><td style='width: 12em;'>
+  <pre>
+  &lt;% f.dd 'hello' do %&gt;
+    world
+  &lt;% end %&gt;
+  </pre>
+</td><td>
+  translates to:
+</td><td>
+  <pre>
+  &lt;dt&gt;&lt;label&gt;hello&lt;/label&gt;&lt;span&gt;&lt;/span&gt;&lt;/dt&gt;&lt;dd&gt;
+    world
+  &lt;/dd&gt;
+  </pre>
+</td></tr></table>
+  <p>
+  They will appear more useful when applied with <code>text_field</code>, <code>check_box</code>, etc Rails helpers. See the example below to learn what it wraps for you. To use this builder in your Rails app, there is 3 ways to go about it
   </p>
   <p>
   Option#1 Introducing it independently to new forms by adding this <code>:builder</code> option:
     <pre>
-    form_for :thing, @thing, :url => { :action => 'save' },:builder => ::WebSgFormBuilder do |f|
+    form_for :thing, <span style='background-color: yellow;'>:builder => ::WebSgFormBuilder</span> do |f|
     </pre> 
   </p>
   <p>
-  Option#2 Make this default builder for all forms by editing app/helpers/application_helper.rb
+  Option#2 by editing your controller's helper file, e.g. app/helpers/users_helper.rb
+    <pre>
+    module UsersHelper
+      <span style='background-color: yellow;'>include WebSgFormHelper</span>
+    end
+    </pre> 
+  </p>
+  <p>
+  Option#3 Make this default builder for <b>all</b> forms by editing app/helpers/application_helper.rb
     <pre>
     module ApplicationHelper
-      include WebSgFormHelper
+      <span style='background-color: yellow;'>include WebSgFormHelper</span>
     end
     </pre>
   </p>
