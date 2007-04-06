@@ -19,7 +19,7 @@ class WebSgFormBuilder
   end
   
   def fieldset(name, &proc)
-    concat("<fieldset><legend>#{CGI.escapeHTML(name)}</legend><dl>", proc.binding)
+    concat("<fieldset><legend>#{name}</legend><dl>", proc.binding)
     proc.call(self)
     concat("</dl></fieldset>", proc.binding)
   end
@@ -31,12 +31,14 @@ class WebSgFormBuilder
   end
   
   def dd(label, hint = nil, &proc)
-    concat("<dt><label>#{CGI.escapeHTML(label)}</label><span>#{CGI.escapeHTML(hint)}</span></dt><dd>", proc.binding)
+    concat("<dt><label>#{label}</label><span>#{hint}</span></dt><dd>", proc.binding)
     proc.call(self)
     concat("</dd>", proc.binding)
   end
   
-  def method_missing(input_field, method, options = {}, *args)
+  def method_missing(input_field, method = nil, options = {}, *args)
+    return @builder.send(input_field) if method.nil? && options == {} && args.empty?
+
     case input_field.to_s
     when /hidden/
       @builder.send(input_field, method, options, *args)
@@ -50,7 +52,7 @@ class WebSgFormBuilder
       label = opts.delete(:label) || method.to_s.humanize
       hint  = opts.delete :hint
       "<dt><label for=\"#{CGI.escapeHTML([@builder.object_name, method].join('_').downcase)}\"" + 
-      ">#{CGI.escapeHTML(label)}</label><span>#{CGI.escapeHTML(hint)}</span></dt><dd" + 
+      ">#{label}</label><span>#{hint}</span></dt><dd" + 
       ">#{@builder.send(input_field, method, options, *args)}</dd>"
       end
   end
