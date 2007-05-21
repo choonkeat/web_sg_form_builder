@@ -13,7 +13,7 @@ module ActiveRecord
     class_inheritable_accessor :validated_attributes
     @validated_attributes = {}
     def validation_info(key, attr_name)
-      (self.class.validated_attributes[key] || []).find {|arr, hash| arr.include? attr_name }      
+      (self.class.validated_attributes[key] || []).find {|arr, hash| arr.include? attr_name.to_sym }
     end
   end
 
@@ -40,9 +40,9 @@ module ActiveRecord
             configuration.update(given_attr_names.pop) if given_attr_names.last.is_a?(Hash)            
             self.validated_attributes = (self.validated_attributes ? self.validated_attributes.dup : {})
             if self.validated_attributes[:#{validates_X_of}].kind_of? Array
-              self.validated_attributes[:#{validates_X_of}] << [given_attr_names, configuration]
+              self.validated_attributes[:#{validates_X_of}] << [given_attr_names.collect{|s| s.to_sym}, configuration]
             else
-              self.validated_attributes[:#{validates_X_of}] = [[given_attr_names, configuration]]
+              self.validated_attributes[:#{validates_X_of}] = [[given_attr_names.collect{|s| s.to_sym}, configuration]]
             end
             return #{validates_X_of}_without_audit(*original_attr_names)
           end

@@ -49,14 +49,14 @@ class WebSgFormBuilder
       @builder.send(input_field, method, options, *args)
     else
       # select has extra argument before options hash
-      opts = options.kind_of?(Hash) ? options : args.first
+      opts = options.kind_of?(Hash) ? options : args.first || {}
       label = opts.delete(:label) || method.to_s.humanize
       hint  = opts.delete :hint
       validation_info = (@builder.object && @builder.object.respond_to?(:validation_info) && @builder.object.validation_info(:validates_presence_of, method))
       "<dt class='#{validation_info ? 'required' : 'optional'}'>" + 
       "<label for=\"#{CGI.escapeHTML([@builder.object_name, method].join('_').downcase)}\"" + 
-      ">#{label}</label><span>#{hint}</span></dt><dd" + 
-      ">#{@builder.send(input_field, method, options, *args)}#{validation_info ? '<em class=\"required\"> * required</em>' : ''}</dd>"
+      ">#{label}#{validation_info ? '<em class="required" title="required"> * </em>' : ''}</label><span>#{hint}</span></dt><dd" + 
+      ">#{@builder.send(input_field, method, options, *args)}</dd>"
     end
   end
   
