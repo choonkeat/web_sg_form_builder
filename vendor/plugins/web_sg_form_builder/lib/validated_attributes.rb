@@ -13,7 +13,7 @@ module ActiveRecord
     class_inheritable_accessor :validated_attributes
     @validated_attributes = {}
     def validation_info(key, attr_name)
-      (self.class.validated_attributes[key] || []).find {|arr, hash| arr.include? attr_name.to_sym }
+      ((self.class.validated_attributes ? self.class.validated_attributes[key] : nil) || []).find {|arr, hash| arr.include? attr_name.to_sym }
     end
   end
 
