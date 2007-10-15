@@ -37,26 +37,29 @@ class WebSgFormBuilder
     concat("</dd>", proc.binding)
   end
   
-  def method_missing(input_field, method = nil, options = {}, *args)
-    return @builder.send(input_field) if method.nil? && options == {} && args.empty?
-
+  def method_missing(input_field, *args)
     case input_field.to_s
     when /hidden/
-      @builder.send(input_field, method, options, *args)
+      @builder.send(input_field, *args)
     when /check|radio/
-      @builder.send(input_field, method, options, *args)
+      @builder.send(input_field, *args)
     when /submit|button/
-      @builder.send(input_field, method, options, *args)
+      @builder.send(input_field, *args)
     else
-      # select has extra argument before options hash
-      opts = options.kind_of?(Hash) ? options : args.first || {}
-      label = opts.delete(:label) || method.to_s.humanize
-      hint  = opts.delete :hint
-      validation_info = (@builder.object && @builder.object.respond_to?(:validation_info) && @builder.object.validation_info(:validates_presence_of, method))
-      "<dt class='#{validation_info ? 'required' : 'optional'}'>" + 
-      "<label for=\"#{CGI.escapeHTML([@builder.object_name, method].join('_').downcase)}\"" + 
-      ">#{label}#{validation_info ? '<em class="required" title="required"> * </em>' : ''}</label><span>#{hint}</span></dt><dd" + 
-      ">#{@builder.send(input_field, method, options, *args)}</dd>"
+      if input_field.to_s =~ /=$/ || args.empty?
+        @builder.send(input_field, *args)
+      else
+        # other tag helpers
+        method = args.shift
+        options = args.shift || {}
+        # select has extra argument before options hash
+        opts = options.kind_of?(Hash) ? options : args.first
+        label = opts.delete(:label) || method.to_s.humanize
+        hint  = opts.delete :hint
+        "<dt><label for=\"#{CGI.escapeHTML([@builder.object_name, method].join('_').downcase)}\"" + 
+        ">#{label}</label><span>#{hint}</span></dt><dd" + 
+        ">#{@builder.send(input_field, method, options, *args)}</dd>"
+      end
     end
   end
   
