@@ -37,13 +37,23 @@ class WebSgFormBuilder
     concat("</dd>", proc.binding)
   end
   
+  def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
+    label = options.delete(:label) || method.to_s.humanize
+    @builder.check_box(method, options, checked_value, unchecked_value) +
+    "<label for=\"#{CGI.escapeHTML([@builder.object_name, method].join('_').downcase)}\"" + 
+    ">#{label}</label>"
+  end
+  
+  def radio_button(method, tag_value, options = {})
+    label = options.delete(:label) || tag_value.to_s.humanize
+    @builder.radio_button(method, tag_value, options) +
+    "<label for=\"#{CGI.escapeHTML([@builder.object_name, method, tag_value].join('_').downcase)}\"" + 
+    ">#{label}</label>"
+  end
+  
   def method_missing(input_field, *args)
     case input_field.to_s
-    when /hidden/
-      @builder.send(input_field, *args)
-    when /check|radio/
-      @builder.send(input_field, *args)
-    when /submit|button/
+    when /hidden|submit|button/
       @builder.send(input_field, *args)
     else
       if input_field.to_s =~ /=$/ || args.empty?

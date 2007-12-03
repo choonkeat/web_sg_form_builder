@@ -12,14 +12,14 @@
     <%= f.select    :code_name, %w[alpha],  :hint  => 'this appears on your public profile' %>
     <%= f.text_area :description,           :hint  => 'this appears on your public profile' %>
     
-    <% f.dd 'Hobbies' do %>
-      <%= f.check_box :soccer %> Soccer
-      <%= f.check_box :swimming %> Swimming
+    <% f.dd 'Hobbies', 'optional' do %>
+      <%= f.check_box :soccer %>
+      <%= f.check_box :swimming %>
     <% end %>
   
-    <% f.dd 'Demography' do %>
-      <%= f.radio_button :male %> Male
-      <%= f.radio_button :female %> Female
+    <% f.dd 'Gender', 'optional' do %>
+      <%= f.radio_button :gender, 'male' %>
+      <%= f.radio_button :gender, 'female' %>
     <% end %>        
   <% end %>
   
