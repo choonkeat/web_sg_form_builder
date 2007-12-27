@@ -32,9 +32,15 @@ class WebSgFormBuilder
   end
   
   def dd(label, hint = nil, &proc)
-    concat("<dt><label>#{label}</label><span>#{hint}</span></dt><dd>", proc.binding)
-    proc.call(self)
-    concat("</dd>", proc.binding)
+    prefix = "<dt><label>#{label.to_s.humanize}</label><span>#{hint}</span></dt><dd>"
+    suffix = "</dd>"
+    if proc
+      concat(prefix, proc.binding)
+      proc.call(self)
+      concat(suffix, proc.binding)
+    else
+      prefix + CGI.escapeHTML(@builder.object.send(label)) + suffix
+    end
   end
   
   def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
