@@ -32,14 +32,14 @@ class WebSgFormBuilder
   end
   
   def dd(label, hint = nil, &proc)
-    prefix = "<dt><label>#{label.to_s.humanize}</label><span>#{hint}</span></dt><dd>"
-    suffix = "</dd>"
     if proc
-      concat(prefix, proc.binding)
+      concat("<dt><label>#{label.to_s}</label><span>#{hint}</span></dt><dd>", proc.binding)
       proc.call(self)
-      concat(suffix, proc.binding)
+      concat("</dd>", proc.binding)
     else
-      prefix + CGI.escapeHTML(@builder.object.send(label)) + suffix
+      "<dt><label>#{label.to_s.humanize}</label><span>#{hint}</span></dt><dd>" +
+      CGI.escapeHTML(@builder.object.send(label).to_s) +
+      "</dd>"
     end
   end
   
