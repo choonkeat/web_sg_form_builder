@@ -33,11 +33,11 @@ class WebSgFormBuilder
   
   def dd(label, hint = nil, &proc)
     if proc
-      concat("<dt><label>#{label.to_s}</label><span>#{hint}</span></dt><dd>", proc.binding)
+      concat("<dt><label>#{label.to_s}</label> <span>#{hint}</span></dt><dd>", proc.binding)
       proc.call(self)
       concat("</dd>", proc.binding)
     else
-      "<dt><label>#{label.to_s.humanize}</label><span>#{hint}</span></dt><dd>" +
+      "<dt><label>#{label.to_s.humanize}</label> <span>#{hint}</span></dt><dd>" +
       CGI.escapeHTML(@builder.object.send(label).to_s) +
       "</dd>"
     end
@@ -46,6 +46,7 @@ class WebSgFormBuilder
   def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
     label = options.delete(:label) || method.to_s.humanize
     @builder.check_box(method, options, checked_value, unchecked_value) +
+    " " +
     "<label for=\"#{CGI.escapeHTML([@builder.object_name, method].join('_').downcase)}\"" + 
     ">#{label}</label>"
   end
@@ -53,6 +54,7 @@ class WebSgFormBuilder
   def radio_button(method, tag_value, options = {})
     label = options.delete(:label) || tag_value.to_s.humanize
     @builder.radio_button(method, tag_value, options) +
+    " " +
     "<label for=\"#{CGI.escapeHTML([@builder.object_name, method, tag_value].join('_').downcase)}\"" + 
     ">#{label}</label>"
   end
@@ -73,7 +75,7 @@ class WebSgFormBuilder
         label = opts.delete(:label) || method.to_s.humanize
         hint  = opts.delete :hint
         "<dt><label for=\"#{CGI.escapeHTML([@builder.object_name, method].join('_').downcase)}\"" + 
-        ">#{label}</label><span>#{hint}</span></dt><dd" + 
+        ">#{label}</label> <span>#{hint}</span></dt><dd" + 
         ">#{@builder.send(input_field, method, options, *args)}</dd>"
       end
     end
